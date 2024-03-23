@@ -1,0 +1,4 @@
+Flask
+pyngrok
+python-dotenv
+requests
