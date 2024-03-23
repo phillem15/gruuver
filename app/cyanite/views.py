@@ -6,6 +6,11 @@ from .utils import is_signature_valid, request_file_upload, upload_file_to_cyani
 from .tasks import asynchronously_fetch_library_track_result
 
 
+@cyanite.route('/hello')
+def hello():
+    return 'Hello, Cyanite!'
+
+
 @cyanite.route('/enqueue/<library_track_id>', methods=['POST'])
 def enqueue_analysis(library_track_id):
     mutation_document = """
