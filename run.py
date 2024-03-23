@@ -4,7 +4,7 @@ from pyngrok import ngrok
 app = create_app()
 
 if __name__ == '__main__':
-    port = 5000
+    port = app.config['PORT']
 
     # Start ngrok when app is run, if in development environment
     if app.config['ENV'] == 'dev':

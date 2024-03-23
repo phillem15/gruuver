@@ -58,7 +58,7 @@ def upload_file():
             return jsonify({'error': 'Failed to upload file to Cyanite'}), upload_response.status_code
 
 
-@cyanite.route('/incoming-webhook', methods=['POST'])
+@cyanite.route('/webhook', methods=['POST'])
 def handle_webhook():
     if not request.json:
         return abort(422)  # Unprocessable Entity
