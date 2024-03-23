@@ -1,7 +1,7 @@
 import requests
 import hmac
 import hashlib
-from . import API_URL, ACCESS_TOKEN
+from flask import current_app
 
 
 def is_signature_valid(secret, signature, message):
@@ -18,10 +18,10 @@ def request_file_upload():
             }
         }
     """
-    response = requests.post(API_URL, json={
+    response = requests.post(current_app.config['API_URL'], json={
         'query': mutation
     }, headers={
-        'Authorization': f'Bearer {ACCESS_TOKEN}',
+        'Authorization': f'Bearer {current_app.config["ACCESS_TOKEN"]}',
         'Content-Type': 'application/json'
     })
     return response.json()['data']['fileUploadRequest']
@@ -50,7 +50,7 @@ def create_library_track(file_upload_request_id):
             }
         }
     """
-    response = requests.post(API_URL, json={
+    response = requests.post(current_app.config['API_URL'], json={
         'query': mutation,
         'variables': {
             'input': {
@@ -59,7 +59,7 @@ def create_library_track(file_upload_request_id):
             }
         }
     }, headers={
-        'Authorization': f'Bearer {ACCESS_TOKEN}',
+        'Authorization': f'Bearer {current_app.config["ACCESS_TOKEN"]}',
         'Content-Type': 'application/json'
     })
     return response.json()['data']['libraryTrackCreate']

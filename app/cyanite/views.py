@@ -1,7 +1,7 @@
 import json
 import requests
-from flask import request, jsonify, abort
-from . import cyanite, SECRET, API_URL, ACCESS_TOKEN
+from flask import current_app, request, jsonify, abort
+from . import cyanite
 from .utils import is_signature_valid, request_file_upload, upload_file_to_cyanite, create_library_track
 from .tasks import asynchronously_fetch_library_track_result
 
@@ -23,11 +23,11 @@ def enqueue_analysis(library_track_id):
           }
         }
     """
-    response = requests.post(API_URL, json={
+    response = requests.post(current_app.config['API_URL'], json={
         'query': mutation_document,
         'variables': {'input': {'libraryTrackId': library_track_id}}
     }, headers={
-        'Authorization': f'Bearer {ACCESS_TOKEN}',
+        'Authorization': f'Bearer {current_app.config["ACCESS_TOKEN"]}',
         'Content-Type': 'application/json'
     })
 
@@ -70,7 +70,7 @@ def handle_webhook():
         return '', 200  # OK
 
     signature = request.headers.get('Signature')
-    if not is_signature_valid(SECRET, signature, request.data.decode()):
+    if not is_signature_valid(current_app.config['SECRET'], signature, request.data.decode()):
         print('[info] signature is invalid')
         return abort(400)  # Bad Request
 
